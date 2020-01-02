@@ -1,0 +1,25 @@
+<div class="col-lg-12 mt-3">
+	<h1>{{page_title}}</h1>
+	<p>Log in the forum</p>
+	<hr>
+	<div class="alert alert-success col-md-5 mt-3" *ngIf="status == 'success'">Login was successful </div>
+<div class="alert alert-danger col-md-5 mt-3" *ngIf="status == 'error'">Login is not completed </div>
+
+	<form class="col-md-5 ml-0 pl-0" #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" >
+		<div class="form-group">
+			<label for="email">Email</label>
+			<input type="email" name="email" #email="ngModel" [(ngModel)]="user.email" required pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{1,63}$" class="form-control">
+			<small *ngIf="!email.valid && email.touched" class="invalid-feedback d-block">Email is not valid</small>
+		</div>
+		<div class="form-group">
+			<label for="password">Password</label>
+			<input type="password" name="password" #password="ngModel" [(ngModel)]="user.password" required pattern="[a-zA-ZÀ-ÿ ]+" class="form-control">
+			<small *ngIf="!password.valid && password.touched" class="invalid-feedback d-block">Password is not valid</small>
+		</div>
+		<input type="submit" value="{{page_title}}" class="btn btn-success" [disabled]="loginForm.invalid">
+
+
+
+	</form>
+	
+</div>

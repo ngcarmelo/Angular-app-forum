@@ -1,0 +1,54 @@
+<div *ngIf="topic">
+	<div class="topic-data col-lg-8 float-left">
+		<h1>{{ topic.title}}</h1>
+		<span class="badge badge-warning mr-2" *ngIf="topic.lang">{{topic.lang}}</span>
+		<span class="badge badge-primary">{{topic.user.name + ' '+ topic.user.surname}}</span>
+		<span class="badge badge-primary ml-2">{{topic.date | amTimeAgo }}</span>
+
+		<p id="topic-content" class="mt-2">
+			{{topic.content}}
+		</p>
+
+		<p id="topic-code" class="mt-2" *ngIf="topic.code && topic.lang">
+			<!-- {{topic.code}} -->
+			<ngx-highlight-js  lang="{{topic.lang}}" code="{{topic.code}}">
+
+			</ngx-highlight-js>
+
+		</p>
+	</div>
+	<div class="clearfix"></div>
+	<div id="comment-box" class="mt-2 col-lg-8">
+		<h3>Comments</h3>
+		<hr>
+		<div class="alert alert-success  mt-3" *ngIf="status == 'success'">Comment has been added  successfully</div>
+		<div class="alert alert-danger  mt-3" *ngIf="status == 'error'">Comment has not been added</div>
+
+		<form #formComment="ngForm" (ngSubmit)="onSubmit(formComment)" *ngIf="identity">
+			<div claAss="form-group">
+				<label for="comment">Add your comment</label>
+				<textarea name="content" #content="ngModel" [(ngModel)]="comment.content" required  class="form-control"></textarea> 
+				<small *ngIf="!content.valid && content.touched" class="invalid-feedback d-block">Content is not valid</small>
+				<input type="submit" value="Comment" class="btn btn-success mt-2 mb-2" [disabled]="formComment.invalid">
+			</div>
+		</form>
+		<ul class="list-group">
+
+			<li class="list-group-item mb-5" *ngFor="let comment of topic.comments">
+				<div class="avatar_mask float-left mr-3">
+					<img src="{{ url + 'avatar/' + comment.user.image }}" class="avatar_nav " alt="">
+				</div>
+				<span class="badge badge-primary">{{comment.user.name + ' '+ comment.user.surname}}</span>
+				<span class="badge badge-primary ml-2">{{comment.date | amTimeAgo }}</span>
+				<span class="d-block">
+					{{ comment.content}}
+				</span>
+				<button (click)="deleteComment(comment._id)" class="btn btn-sm btn-danger float-right" *ngIf="identity._id == comment.user._id">Delete</button>
+				
+			</li>			
+		</ul>
+		
+
+	</div>
+
+</div>
